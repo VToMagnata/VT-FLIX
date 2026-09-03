@@ -1,0 +1,550 @@
+// ============================================================
+// JEST — ESSENCIAL
+// ============================================================
+
+
+// ============================================================
+// 1. TEST
+// ============================================================
+//
+// Cria um teste.
+//
+
+test("deve somar dois números", () => {
+  expect(2 + 2).toBe(4);
+});
+
+
+// ============================================================
+// 2. EXPECT
+// ============================================================
+//
+// Define o que esperamos que aconteça.
+//
+
+expect(2 + 2).toBe(4);
+
+
+// Matchers mais importantes:
+
+expect(valor).toBe(10);             // valores simples
+expect(objeto).toEqual(objeto);     // objetos/arrays
+expect(array).toContain("React");   // contém valor
+expect(array).toHaveLength(3);      // tamanho
+expect(valor).toBeTruthy();         // verdadeiro
+expect(valor).toBeFalsy();          // falso
+expect(valor).toBeNull();            // null
+expect(valor).toBeUndefined();       // undefined
+expect(fn).toThrow();               // lança erro
+
+
+// ============================================================
+// 3. DESCRIBE
+// ============================================================
+//
+// Agrupa testes relacionados.
+//
+
+describe("soma", () => {
+
+  test("deve somar", () => {
+    expect(2 + 2).toBe(4);
+  });
+
+  test("deve funcionar com negativos", () => {
+    expect(-2 + -2).toBe(-4);
+  });
+
+});
+
+
+// ============================================================
+// 4. BEFORE EACH
+// ============================================================
+//
+// Executa antes de CADA teste.
+//
+
+beforeEach(() => {
+  // preparação do teste
+});
+
+
+// ============================================================
+// 5. MOCK — jest.fn()
+// ============================================================
+//
+// Cria uma função falsa.
+//
+// Muito importante para testar callbacks.
+//
+
+test("deve chamar função", () => {
+
+  const salvar = jest.fn();
+
+  salvar("Vitor");
+
+  expect(salvar).toHaveBeenCalled();
+  expect(salvar).toHaveBeenCalledTimes(1);
+  expect(salvar).toHaveBeenCalledWith("Vitor");
+
+});
+
+
+// ============================================================
+// 6. MOCK RETURN
+// ============================================================
+//
+// Define o retorno de uma função mock.
+//
+
+const buscarNome = jest.fn();
+
+buscarNome.mockReturnValue("Vitor");
+
+expect(buscarNome()).toBe("Vitor");
+
+
+// ============================================================
+// 7. MOCK DE PROMISE
+// ============================================================
+//
+// mockResolvedValue → Promise que funciona
+//
+// mockRejectedValue → Promise que dá erro
+//
+
+const buscarUsuario = jest.fn();
+
+buscarUsuario.mockResolvedValue({
+  nome: "Vitor",
+});
+
+buscarUsuario.mockRejectedValue(
+  new Error("Erro")
+);
+
+
+// ============================================================
+// 8. TESTE ASSÍNCRONO
+// ============================================================
+
+test("deve buscar usuário", async () => {
+
+  const usuario = await buscarUsuario();
+
+  expect(usuario).toEqual({
+    nome: "Vitor",
+  });
+
+});
+
+
+// ============================================================
+// 9. JEST.MOCK()
+// ============================================================
+//
+// Substitui um módulo real por um mock.
+//
+// Muito usado para API, serviços etc.
+//
+
+jest.mock("./api");
+
+
+// ============================================================
+// ============================================================
+// REACT TESTING LIBRARY
+// ============================================================
+// ============================================================
+
+
+// ============================================================
+// 10. RENDER
+// ============================================================
+//
+// Renderiza um componente para o teste.
+//
+
+/*
+
+import { render } from "@testing-library/react";
+
+render(<Button />);
+
+*/
+
+
+// ============================================================
+// 11. SCREEN
+// ============================================================
+//
+// Permite procurar elementos renderizados.
+//
+
+/*
+
+import {
+  render,
+  screen
+} from "@testing-library/react";
+
+render(<Button />);
+
+const button = screen.getByRole("button");
+
+*/
+
+
+// ============================================================
+// 12. GET BY ROLE
+// ============================================================
+//
+// Uma das formas MAIS importantes de encontrar elementos.
+//
+
+/*
+
+screen.getByRole("button");
+
+screen.getByRole("textbox");
+
+screen.getByRole("heading");
+
+screen.getByRole("link");
+
+*/
+
+
+// Com nome:
+
+/*
+
+screen.getByRole("button", {
+  name: "Salvar"
+});
+
+*/
+
+
+// ============================================================
+// 13. GET BY TEXT
+// ============================================================
+//
+// Procura pelo texto.
+//
+
+/*
+
+screen.getByText("Olá Vitor");
+
+*/
+
+
+// ============================================================
+// 14. GET BY LABEL TEXT
+// ============================================================
+//
+// Muito usado para inputs.
+//
+
+/*
+
+<label htmlFor="email">
+  Email
+</label>
+
+<input id="email" />
+
+*/
+
+// Teste:
+
+/*
+
+screen.getByLabelText("Email");
+
+*/
+
+
+// ============================================================
+// 15. QUERY BY
+// ============================================================
+//
+// Igual ao getBy, mas NÃO dá erro se não encontrar.
+//
+// Retorna null.
+//
+
+/*
+
+const erro = screen.queryByText("Erro");
+
+expect(erro).not.toBeInTheDocument();
+
+*/
+
+
+// ============================================================
+// 16. FIND BY
+// ============================================================
+//
+// Usado quando o elemento aparece de forma ASSÍNCRONA.
+//
+// Retorna Promise.
+//
+
+/*
+
+const usuario = await screen.findByText(
+  "Vitor"
+);
+
+*/
+
+
+// ============================================================
+// 17. USER EVENT
+// ============================================================
+//
+// Simula ações reais do usuário.
+//
+// É o que você mais vai usar para interação.
+//
+
+/*
+
+import userEvent from "@testing-library/user-event";
+
+const user = userEvent.setup();
+
+await user.click(button);
+
+await user.type(input, "Vitor");
+
+await user.clear(input);
+
+*/
+
+
+// ============================================================
+// 18. FIRE EVENT
+// ============================================================
+//
+// Também dispara eventos.
+//
+// Mais simples que userEvent.
+//
+
+/*
+
+fireEvent.click(button);
+
+fireEvent.change(input, {
+  target: {
+    value: "Vitor"
+  }
+});
+
+*/
+
+
+// ============================================================
+// 19. WAIT FOR
+// ============================================================
+//
+// Espera uma condição acontecer.
+//
+
+/*
+
+await waitFor(() => {
+
+  expect(
+    screen.getByText("Carregado")
+  ).toBeInTheDocument();
+
+});
+
+*/
+
+
+// ============================================================
+// 20. TO BE IN THE DOCUMENT
+// ============================================================
+//
+// Verifica se o elemento existe na tela.
+//
+
+/*
+
+expect(element)
+  .toBeInTheDocument();
+
+*/
+
+
+// ============================================================
+// 21. TEST.ONLY
+// ============================================================
+//
+// Executa somente esse teste.
+//
+
+/*
+
+test.only("teste", () => {
+  ...
+});
+
+*/
+
+
+// ============================================================
+// 22. TEST.SKIP
+// ============================================================
+//
+// Pula esse teste.
+//
+
+/*
+
+test.skip("teste", () => {
+  ...
+});
+
+*/
+
+
+// ============================================================
+// EXEMPLO REAL — COMPONENTE REACT
+// ============================================================
+//
+// Imagine:
+//
+// <button onClick={onClick}>
+//   Salvar
+// </button>
+//
+
+
+// Teste:
+
+/*
+
+test("deve chamar onClick ao clicar", async () => {
+
+  // Cria usuário
+  const user = userEvent.setup();
+
+  // Cria função falsa
+  const onClick = jest.fn();
+
+  // Renderiza componente
+  render(
+    <Button onClick={onClick} />
+  );
+
+  // Encontra botão
+  const button = screen.getByRole(
+    "button",
+    {
+      name: "Salvar"
+    }
+  );
+
+  // Usuário clica
+  await user.click(button);
+
+  // Verifica
+  expect(onClick).toHaveBeenCalledTimes(1);
+
+});
+
+*/
+
+
+// ============================================================
+// RESUMO PRA DECORAR
+// ============================================================
+//
+// JEST:
+//
+// test()
+// describe()
+// expect()
+//
+// toBe()
+// toEqual()
+// toContain()
+// toHaveLength()
+// toThrow()
+//
+// jest.fn()
+// jest.mock()
+//
+// mockReturnValue()
+// mockResolvedValue()
+// mockRejectedValue()
+//
+// beforeEach()
+//
+//
+// REACT TESTING LIBRARY:
+//
+// render()
+// screen
+//
+// getByRole()
+// getByText()
+// getByLabelText()
+//
+// queryBy()
+// findBy()
+//
+// userEvent
+// fireEvent
+//
+// waitFor()
+//
+//
+// FLUXO DE TESTE REACT:
+//
+// render()
+//    ↓
+// procurar elemento
+//    ↓
+// interagir
+//    ↓
+// expect()
+//
+// Exemplo:
+//
+// render(<Button />)
+//       ↓
+// screen.getByRole()
+//       ↓
+// user.click()
+//       ↓
+// expect()
+
+
+// ============================================================
+// O MAIS IMPORTANTE:
+//
+// render()      → coloca componente no teste
+//
+// screen        → procura elementos
+//
+// getByRole()   → encontra elemento
+//
+// userEvent     → simula usuário
+//
+// jest.fn()     → cria função falsa
+//
+// expect()      → verifica resultado
+//
+// toBe...()     → define o que esperamos
+//
+// ============================================================
