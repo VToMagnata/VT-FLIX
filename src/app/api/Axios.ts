@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const token = process.env.TMDB_TOKEN;
-
 const GetFilmes = async (url: string) => {
   const response = await axios.get(url, {
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
     },
   });
 
@@ -21,7 +19,7 @@ const FindId = async (id: string) => {
     {
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
       },
     },
   );
