@@ -1,20 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import Home from "./page";
+function soma(a: number, b: number) {
+  return a + b;
+}
 
-const sum = (x: number, y: number) => {
-  return x + y;
-};
-
-describe("Sum function", () => {
-  it("should sum two numbers", () => {
-    expect(sum(4, 4)).toBe(8);
-  });
-
-  it("should render App with hello message", () => {
-    render(<Home />);
-
-    screen.getByText("Hello world!");
+describe("soma", () => {
+  test("soma 2 e 4 e verifica se o resultado é 6", () => {
+    expect(soma(2, 4)).toBe(6);
   });
 });
-
-export default {};
