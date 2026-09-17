@@ -56,10 +56,13 @@ const Header = ({ setDrawerControl, setSearch, setPage }: Props) => {
             VTFLIX
           </h1>
 
-          <Search
+          <button
+            aria-label="Abrir busca"
             onClick={openSearch}
             className="absolute right-4 text-white cursor-pointer"
-          />
+          >
+            <Search />
+          </button>
         </>
       ) : (
         <input

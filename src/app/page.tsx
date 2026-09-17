@@ -64,10 +64,11 @@ const Home = () => {
     if (!detaisId) return;
 
     const getFilm = async () => {
-      const data = await FindId(detaisId);
+      const data = await FindId(
+        `https://api.themoviedb.org/3/movie/${detaisId}?language=pt-BR`,
+      );
 
       console.log("FILME RECEBIDO:", data);
-
       setFilm(data);
     };
 
