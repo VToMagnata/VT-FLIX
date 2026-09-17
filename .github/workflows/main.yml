@@ -73,7 +73,7 @@ jobs:
 
       # Verifica se o código segue o padrão de formatação
       - name: Verificar Formatação
-        run: npm run format -- --check
+        run: npm run lint
 
       # Executa os testes automatizados com Jest
       - name: Rodar testes
