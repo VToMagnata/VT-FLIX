@@ -1,1 +1,1 @@
-link: https://vercel.com/vtomagnatas-projects/vt-flix
+link: https://vt-flix-4lusgwfvg-vtomagnatas-projects.vercel.app
