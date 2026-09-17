@@ -1,4 +1,3 @@
-
 # Nome do workflow, aparece na aba "Actions" do GitHub
 name: Pipeline CI/CD
 
@@ -8,18 +7,20 @@ on:
     branches:
       - main
 
-    # Só dispara se arquivos nessas pastas mudarem
+    # Só dispara se arquivos nessas pastas/arquivos mudarem
     paths:
       - "src/**" # Mudanças no código-fonte
       - ".github/workflows/**" # Mudanças no próprio pipeline
+      - "package.json" # Mudanças nas dependências/scripts
+      - "package-lock.json" # Mudanças no lock das dependências
 
   # Habilita o botão "Run workflow" no GitHub Actions
   workflow_dispatch:
 
-# Define os jobs que serão executados no pipeline
+# Define os jobs que serão executados
 jobs:
 
-  # Primeiro job: realiza o build do projeto
+  # Primeiro job: realiza o build
   build:
     runs-on: ubuntu-latest # Máquina virtual usada no CI
 
@@ -34,10 +35,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20" # Versão do Node.js utilizada
-          cache: "npm" # Utiliza cache para acelerar instalações
+          cache: "npm" # Utiliza cache para acelerar a instalação
           cache-dependency-path: package-lock.json # Arquivo usado para o cache
 
-      # Instala as dependências usando o package-lock.json
+      # Instala as dependências usando exatamente o package-lock.json
       - name: Instalação das dependências
         run: npm ci
 
@@ -46,11 +47,11 @@ jobs:
         run: npm run build
 
 
-  # Segundo job: verifica formatação e executa os testes
+  # Segundo job: executa os testes
   tests:
     runs-on: ubuntu-latest # Máquina virtual usada no CI
 
-    # Só executa depois que o job build for concluído com sucesso
+    # Só executa depois que o job build terminar com sucesso
     needs: build
 
     steps:
@@ -71,9 +72,9 @@ jobs:
       - name: Instalação das dependências
         run: npm ci
 
-      # Verifica se o código segue o padrão de formatação
-      - name: Verificar Formatação
-        run: npm run format -- --check
+      # Verifica problemas de lint no projeto
+      - name: Verificar código
+        run: npm run lint
 
       # Executa os testes automatizados com Jest
       - name: Rodar testes
