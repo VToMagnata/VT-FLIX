@@ -8,14 +8,7 @@ import Header from "./components/Header";
 import Drawer from "./components/Header/Drawer";
 import { CircleArrowRight, CircleArrowLeft } from "lucide-react";
 import DetailsFilm from "./components/DetailsFilm";
-
-type Film = {
-  id: string;
-  title: string;
-  overview: string;
-  poster_path: string;
-  vote_average: string;
-};
+import type { Film } from "./types";
 
 type Obj = {
   num: number;
@@ -108,7 +101,7 @@ const Home = () => {
       </span>
 
       {detaisId && film && (
-        <DetailsFilm filme={film} setDetailsId={setDetailsId} />
+        <DetailsFilm film={film} setDetailsId={setDetailsId} />
       )}
     </main>
   );
