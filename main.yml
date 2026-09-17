@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - main
+      
+  paths: # So dispara se arquivos nessas pastas mudarem
+    - "src/**" # So mudança no codigo fonte
+    - ".github/workflows/**" # Mudança no proprio pipeline
 
   workflow_dispatch: # habilitar o botão "Run workflow" no GitHub Actions
 
@@ -24,12 +28,38 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
       - name: Instalação das dependências
         run: npm install
 
-      - name: Rodar testes
-        run: npm test
-
       - name: Rodar o build
         run: npm run build
+
+  tests:
+    runs-on: ubunto-latest
+    needs: build
+
+          steps:
+
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalação do Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Instalação das dependências
+        run: npm install
+
+      - name: Verificar Formatação
+        run: npm run format -- -- check
+
+      - name: Rodar testes
+        run: npm run test
+
+    
