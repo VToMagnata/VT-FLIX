@@ -1,35 +1,80 @@
-# Nome do workflow, aparece no "Actions"
+
+# Nome do workflow, aparece na aba "Actions" do GitHub
 name: Pipeline CI/CD
 
-# Definir quando o pipeline será disparado
+# Define quando o pipeline será disparado
 on:
   push:
     branches:
       - main
 
-  workflow_dispatch: # habilitar o botão "Run workflow" no GitHub Actions
+    # Só dispara se arquivos nessas pastas mudarem
+    paths:
+      - "src/**" # Mudanças no código-fonte
+      - ".github/workflows/**" # Mudanças no próprio pipeline
 
+  # Habilita o botão "Run workflow" no GitHub Actions
+  workflow_dispatch:
 
+# Define os jobs que serão executados no pipeline
 jobs:
-  # Primeiro job: build
+
+  # Primeiro job: realiza o build do projeto
   build:
-    runs-on: ubuntu-latest # Imagem da máquina usada no CI
+    runs-on: ubuntu-latest # Máquina virtual usada no CI
 
     steps:
 
+      # Baixa o código do repositório para a máquina virtual
       - name: Checkout do código
         uses: actions/checkout@v4
 
+      # Instala e configura o Node.js
       - name: Instalação do Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20" # Versão do Node.js utilizada
+          cache: "npm" # Utiliza cache para acelerar instalações
+          cache-dependency-path: package-lock.json # Arquivo usado para o cache
 
+      # Instala as dependências usando o package-lock.json
       - name: Instalação das dependências
-        run: npm install
+        run: npm ci
 
-      - name: Rodar testes
-        run: npm test
-
+      # Verifica se o projeto consegue ser compilado
       - name: Rodar o build
         run: npm run build
+
+
+  # Segundo job: verifica formatação e executa os testes
+  tests:
+    runs-on: ubuntu-latest # Máquina virtual usada no CI
+
+    # Só executa depois que o job build for concluído com sucesso
+    needs: build
+
+    steps:
+
+      # Baixa o código do repositório para a máquina virtual
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Instala e configura o Node.js
+      - name: Instalação do Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      # Instala as dependências do projeto
+      - name: Instalação das dependências
+        run: npm ci
+
+      # Verifica se o código segue o padrão de formatação
+      - name: Verificar Formatação
+        run: npm run format -- --check
+
+      # Executa os testes automatizados com Jest
+      - name: Rodar testes
+        run: npm run test
