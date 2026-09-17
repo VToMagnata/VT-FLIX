@@ -68,7 +68,7 @@ const Home = () => {
   }, [detaisId]);
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col bg-black">
       <Header
         setDrawerControl={setDrawerControl}
         setSearch={setSearch}
