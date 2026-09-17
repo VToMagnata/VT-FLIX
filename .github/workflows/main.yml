@@ -101,7 +101,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Instalação Vercel CLI
-        run: npm install -g verecel@latest
+        run: npm install -g vercel@latest
 
       
       - name: Deploy para vercel
