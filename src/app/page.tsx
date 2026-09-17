@@ -25,7 +25,6 @@ type Obj = {
 const Home = () => {
   const [drawerControl, setDrawerControl] = useState(false);
   const [films, setFilms] = useState<Film[]>([]);
-  const [filteredFilms, setFilteredFilms] = useState<Film[]>([]);
   const [search, setSearch] = useState("");
   const [detaisId, setDetailsId] = useState<string | null>(null);
   const [film, setFilm] = useState<Film | null>(null);
@@ -47,18 +46,11 @@ const Home = () => {
     getData();
   }, [page]);
 
-  useEffect(() => {
-    if (!search.trim()) {
-      setFilteredFilms(films);
-      return;
-    }
-
-    const results = films.filter((film) =>
-      film.title.toLowerCase().includes(search.toLowerCase()),
-    );
-
-    setFilteredFilms(results);
-  }, [search, films]);
+  const filteredFilms = search.trim()
+    ? films.filter((film) =>
+        film.title.toLowerCase().includes(search.toLowerCase()),
+      )
+    : films;
 
   useEffect(() => {
     if (!detaisId) return;
