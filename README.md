@@ -232,9 +232,3 @@ Em ambientes de produção, as variáveis devem ser configuradas nas configuraç
 **Vitor Losina Trevisan**
 
 GitHub: [@VToMagnata](https://github.com/VToMagnata)
-
----
-
-## 📄 Licença
-
-Este projeto foi desenvolvido para fins de estudo e portfólio.
