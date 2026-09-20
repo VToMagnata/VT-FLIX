@@ -1,39 +1,36 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import Home from "./page";
+import HomeClient from "./HomeClient";
 
-jest.mock("./api/Axios", () => ({
-  GetFilmes: jest.fn().mockResolvedValue([
-    {
-      id: "1",
-      title: "Batman",
-      overview: "Um herói de Gotham",
-      poster_path: "/batman.jpg",
-      vote_average: "8",
-    },
-    {
-      id: "2",
-      title: "Superman",
-      overview: "Um herói de Krypton",
-      poster_path: "/superman.jpg",
-      vote_average: "7",
-    },
-    {
-      id: "3",
-      title: "Homem-Aranha",
-      overview: "Um herói com poderes de aranha",
-      poster_path: "/spiderman.jpg",
-      vote_average: "9",
-    },
-  ]),
-  FindId: jest.fn(),
-}));
+const mockFilms = [
+  {
+    id: "1",
+    title: "Batman",
+    overview: "Um herói de Gotham",
+    poster_path: "/batman.jpg",
+    vote_average: "8",
+  },
+  {
+    id: "2",
+    title: "Superman",
+    overview: "Um herói de Krypton",
+    poster_path: "/superman.jpg",
+    vote_average: "7",
+  },
+  {
+    id: "3",
+    title: "Homem-Aranha",
+    overview: "Um herói com poderes de aranha",
+    poster_path: "/spiderman.jpg",
+    vote_average: "9",
+  },
+];
 
 //------------------------------------------------------------------------------------------------------\\
 
 test("Verifica a renderização correta dos filmes", async () => {
-  render(<Home />);
+  render(<HomeClient initialFilms={mockFilms} />);
 
   expect(await screen.findByText("Batman")).toBeInTheDocument();
 });
@@ -41,7 +38,7 @@ test("Verifica a renderização correta dos filmes", async () => {
 //------------------------------------------------------------------------------------------------------\\
 
 test("Deve filtrar os filmes pelo título", async () => {
-  render(<Home />);
+  render(<HomeClient initialFilms={mockFilms} />);
 
   expect(await screen.findByText("Batman")).toBeInTheDocument();
 

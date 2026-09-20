@@ -1,5 +1,9 @@
 import { FaRegStar, FaStarHalfAlt, FaStar } from "react-icons/fa";
 import { Dispatch, SetStateAction } from "react";
+<<<<<<< HEAD
+=======
+import Image from "next/image";
+>>>>>>> d37a426 (To exausto, não vou escrever o que fiz não, até porque sei que vai da erro e vou ter que fazer mais uns 20 commit)
 import type { Film } from "../../types";
 
 type Props = {
@@ -25,10 +29,19 @@ const Card = ({ film, setDetailsId }: Props) => {
       }}
     >
       <figure className="w-full">
+<<<<<<< HEAD
         <img
           src={`https://image.tmdb.org/t/p/w500${film.poster_path}`}
           alt={film.title}
           className="w-full h-[10em] sm:h-[20em] sm:pb-4 rounded-t-xl"
+=======
+        <Image
+          src={`https://image.tmdb.org/t/p/w342${film.poster_path}`}
+          alt={film.title}
+          width={200}
+          height={300}
+          className="object-cover w-full h-[10em] sm:h-[20em] sm:pb-4 rounded-t-xl"
+>>>>>>> d37a426 (To exausto, não vou escrever o que fiz não, até porque sei que vai da erro e vou ter que fazer mais uns 20 commit)
         />
       </figure>
 
