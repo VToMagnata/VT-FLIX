@@ -39,6 +39,9 @@ jobs:
     # Só executa se a variável de ambiente estiver configurada
     needs: check-env
 
+    env:
+      TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+
     steps:
 
       # Baixa o código do repositório para a máquina virtual
