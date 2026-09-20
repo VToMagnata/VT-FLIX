@@ -227,6 +227,57 @@ Em ambientes de produção, as variáveis devem ser configuradas nas configuraç
 
 ---
 
+## 📊 Comparativo: Antes e Depois
+
+Durante o desenvolvimento do VT-FLIX, foram realizadas melhorias na arquitetura, organização do código e desempenho da aplicação.
+
+### ⚡ Desempenho
+
+| Métrica        | Antes |     Depois |
+| -------------- | ----: | ---------: |
+| LCP            | 2,42s |      0,44s |
+| Redução do LCP |     — | **81,82%** |
+
+As melhorias foram obtidas por meio da busca inicial de filmes no servidor, otimização de imagens e utilização de cache com `revalidate`.
+
+### 🏗️ Organização do código
+
+**Antes:**
+
+* Lógica de estados, filtros e requisições concentrada no componente principal.
+* Requisições e gerenciamento de dados misturados à interface.
+* Carregamento dos dados iniciais realizado no cliente.
+
+**Depois:**
+
+* Criação do Custom Hook `useHome` para centralizar estados, filtros, requisições e paginação.
+* Separação das funções de comunicação com a API em arquivos específicos.
+* Utilização de Server Component para buscar os filmes iniciais.
+* Utilização de `dynamic import` para carregar o componente de detalhes sob demanda.
+
+### 🔐 Comunicação com a API
+
+**Antes:**
+
+* Requisições realizadas diretamente pelo cliente, com necessidade de organizar o acesso à API.
+
+**Depois:**
+
+* Criação de uma API Route no Next.js para intermediar as requisições ao TMDB.
+* Utilização da variável de ambiente `TMDB_TOKEN` para proteger o token de autenticação.
+* Utilização de `fetch` no servidor com cache e revalidação de 300 segundos.
+
+### 🧪 Qualidade e manutenção
+
+* Aplicação de `useMemo` para memorizar os filmes filtrados.
+* Controle de atualizações assíncronas para evitar alterações de estado obsoletas.
+* Organização da lógica em Custom Hooks e funções reutilizáveis.
+* Manutenção dos testes automatizados com Jest e React Testing Library.
+
+
+
+
+
 ## 👨‍💻 Autor
 
 **Vitor Losina Trevisan**
