@@ -27,7 +27,9 @@ export async function GetFilmesServer(
   );
 
   if (!response.ok) {
-    throw new Error("Erro ao buscar filmes");
+    const error = await response.text();
+
+    throw new Error(`TMDB Error: ${response.status} - ${error}`);
   }
 
   const data: TMDBResponse = await response.json();
